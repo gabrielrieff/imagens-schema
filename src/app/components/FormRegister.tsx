@@ -1,22 +1,20 @@
 import { z } from "zod";
 import { useRegisterSchema } from "./schema/schemeRegister";
-import { Button } from "./ui/Button";
-import { Input } from "./ui/Input";
-import { auth } from "../firebase/firebaseConnec";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { AuthContext } from "~/context/context";
+import { useContext } from "react";
 
 export const FormRegister = () => {
+  const { createUser } = useContext(AuthContext);
+
   const { handleSubmit, schema, errors, register } = useRegisterSchema();
   type formDataProps = z.infer<typeof schema>;
 
   const registerUser = async (data: formDataProps) => {
-    const { email, name, passaword, user } = data;
+    const { email, name, password, user } = data;
 
-    await createUserWithEmailAndPassword(auth, email, passaword)
-      .then((response) => {})
-      .catch((err) => {
-        console.log(err);
-      });
+    await createUser({ email, name, password, user });
   };
 
   return (
@@ -65,14 +63,10 @@ export const FormRegister = () => {
       <label className="flex flex-col">
         <div className="flex flex-col">
           <span>Senha</span>
-          <Input
-            autoComplete="off"
-            {...register("passaword")}
-            type="password"
-          />
-          {errors.passaword && (
+          <Input autoComplete="off" {...register("password")} type="password" />
+          {errors.password && (
             <span className="text-red-700 font-semibold">
-              {errors.passaword.message}
+              {errors.password.message}
             </span>
           )}
         </div>

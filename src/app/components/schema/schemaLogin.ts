@@ -8,9 +8,7 @@ export const useLoginSchema = () => {
       .string()
       .min(1, { message: "Por gentileza informe um email" })
       .email({ message: "Por gentileza informe um email valido" }),
-    passaword: z
-      .string()
-      .min(3, { message: "Por gentileza forneça uma senha" }),
+    password: z.string().min(3, { message: "Por gentileza forneça uma senha" }),
   });
 
   type formDataProps = z.infer<typeof schema>;
@@ -25,7 +23,7 @@ export const useLoginSchema = () => {
     resolver: zodResolver(schema),
     defaultValues: {
       email: "",
-      passaword: "",
+      password: "",
     },
   });
 

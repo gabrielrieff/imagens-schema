@@ -1,24 +1,20 @@
 import { z } from "zod";
 import { useLoginSchema } from "./schema/schemaLogin";
-import { Button } from "./ui/Button";
-import { Input } from "./ui/Input";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase/firebaseConnec";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { useContext } from "react";
+import { AuthContext } from "~/context/context";
 
 export const FormLogin = () => {
+  const { signIn } = useContext(AuthContext);
+
   const { handleSubmit, schema, errors, register } = useLoginSchema();
   type formDataProps = z.infer<typeof schema>;
 
   const authUser = async (data: formDataProps) => {
-    const { passaword, email } = data;
+    const { password, email } = data;
 
-    await signInWithEmailAndPassword(auth, email, passaword)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    await signIn(email, password);
   };
 
   return (
@@ -42,10 +38,10 @@ export const FormLogin = () => {
       <label className="flex flex-col">
         <div className="flex flex-col">
           <span>Senha</span>
-          <Input autoComplete="off" {...register("passaword")} type="text" />
-          {errors.passaword && (
+          <Input autoComplete="off" {...register("password")} type="text" />
+          {errors.password && (
             <span className="text-red-700 font-semibold">
-              {errors.passaword.message}
+              {errors.password.message}
             </span>
           )}
         </div>
