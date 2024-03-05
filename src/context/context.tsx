@@ -10,7 +10,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { usePathname, useRouter } from "next/navigation";
 
 import { ReactNode, createContext, useEffect, useState } from "react";
-import { auth, db } from "~/app/firebase/firebaseConnec";
+import { auth, db } from "~/firebase/firebaseConnec";
 import { authUserModelProps, createUserModelProps } from "~/model/userModel";
 
 type AuthContextData = {
