@@ -13,14 +13,19 @@ import {
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { IoIosArrowDown, IoMdSearch } from "react-icons/io";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export const Header = () => {
   const { userAuth, signOutUser } = useContext(AuthContext);
   const { push } = useRouter();
+  const path = usePathname();
 
   return (
-    <header className="flex items-center justify-around h-[80px] w-[90%] max-w-[1200px]">
+    <header
+      className={`flex items-center justify-around h-[80px] w-[90%] max-w-[1200px] ${
+        path === "/user" && "hidden"
+      }`}
+    >
       <div className="flex items-center gap-5">
         <Link
           href={"/"}

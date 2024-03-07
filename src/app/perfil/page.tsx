@@ -11,7 +11,7 @@ import { getImagesUser } from "~/helpers/getImagesUser";
 
 export default function Perfil() {
   const { userAuth } = useContext(AuthContext);
-  const { back, push } = useRouter();
+  const { push } = useRouter();
 
   const [SavedAndCreated, setSavedAndCreated] = useState(true);
   const [images, setImages] = useState<imagesProps[]>([]);
@@ -77,7 +77,7 @@ export default function Perfil() {
                     Criar imagem
                   </Button>
                 </div>
-                <div className="max-w-[1200px] flex flex-wrap">
+                <div className="max-w-[1200px] flex flex-wrap gap-3">
                   {images.length > 0 ? (
                     images.map((image) => (
                       <div className="relative group" key={image.imgID}>
