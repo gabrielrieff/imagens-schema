@@ -1,12 +1,24 @@
 import { z } from "zod";
-import { useLoginSchema } from "./schema/schemaLogin";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "~/context/context";
+import { useLoginSchema } from "./schema/schemaLogin";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 
 export const FormLogin = () => {
   const { signIn } = useContext(AuthContext);
+
+  const [invisiblePassword, setInvisiblePassword] = useState(true);
 
   const { handleSubmit, schema, errors, register } = useLoginSchema();
   type formDataProps = z.infer<typeof schema>;
@@ -17,36 +29,74 @@ export const FormLogin = () => {
     await signIn(email, password);
   };
 
+  function handleInvisiblePassword() {
+    setInvisiblePassword(!invisiblePassword);
+  }
+
   return (
-    <form
-      onSubmit={handleSubmit(authUser)}
-      autoComplete="off"
-      className="flex flex-col gap-2"
-    >
-      <h1>Login</h1>
-      <label className="flex flex-col">
-        <div className="flex flex-col">
-          <span>Email</span>
-          <Input autoComplete="off" {...register("email")} type="text" />
-          {errors.email && (
-            <span className="text-red-700 font-semibold">
-              {errors.email.message}
-            </span>
-          )}
-        </div>
-      </label>
-      <label className="flex flex-col">
-        <div className="flex flex-col">
-          <span>Senha</span>
-          <Input autoComplete="off" {...register("password")} type="text" />
-          {errors.password && (
-            <span className="text-red-700 font-semibold">
-              {errors.password.message}
-            </span>
-          )}
-        </div>
-      </label>
-      <Button type="submit">Entrar</Button>
-    </form>
+    <Card className="w-[350px] h-full">
+      <form
+        onSubmit={handleSubmit(authUser)}
+        autoComplete="off"
+        className="flex flex-col gap-2"
+      >
+        <CardHeader>
+          <CardTitle>Login</CardTitle>
+          <CardDescription>
+            Deploy your new project in one-click.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col justify-center gap-3">
+          <label className="flex flex-col">
+            <div className="flex flex-col">
+              <span>Email</span>
+              <Input autoComplete="off" {...register("email")} type="text" />
+              {errors.email && (
+                <span className="text-red-700 text-xs">
+                  {errors.email.message}
+                </span>
+              )}
+            </div>
+          </label>
+          <label className="flex flex-col">
+            <div className="flex flex-col relative">
+              <span>Senha</span>
+              <div className="flex">
+                <Input
+                  className="rounded-r-none"
+                  autoComplete="off"
+                  {...register("password")}
+                  type={`${invisiblePassword ? "password" : "text"}`}
+                />
+                <Button
+                  type="button"
+                  className="rounded-l-none px-3 bg-zinc-700"
+                  onClick={handleInvisiblePassword}
+                >
+                  {invisiblePassword === true ? (
+                    <IoEyeOutline size={25} />
+                  ) : (
+                    <IoEyeOffOutline size={25} />
+                  )}
+                </Button>
+              </div>
+              {errors.password && (
+                <span className="text-red-700 text-xs">
+                  {errors.password.message}
+                </span>
+              )}
+            </div>
+          </label>
+        </CardContent>
+        <CardFooter>
+          <Button
+            type="submit"
+            className="bg-emerald-600 hover:bg-emerald-400 w-full"
+          >
+            Entrar
+          </Button>
+        </CardFooter>
+      </form>
+    </Card>
   );
 };
