@@ -5,6 +5,7 @@ import { AuthContext } from "~/context/context";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -12,15 +13,16 @@ import {
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { IoIosArrowDown, IoMdSearch } from "react-icons/io";
+import { Dialog, DialogTrigger } from "../ui/dialog";
+import { AddImagem } from "./AddImagem";
+import { useRouter } from "next/navigation";
 
 export const Header = () => {
   const { userAuth, signOutUser } = useContext(AuthContext);
+  const { push } = useRouter();
 
-  if (userAuth === undefined) {
-    return;
-  }
   return (
-    <header className="flex items-center justify-around h-[80px] w-[90%]">
+    <header className="flex items-center justify-around h-[80px] w-[90%] max-w-[1200px]">
       <div className="flex items-center gap-5">
         <Link
           href={"/"}
@@ -30,11 +32,15 @@ export const Header = () => {
         </Link>
 
         <Button asChild>
-          <Link href={"/"}> Página inicial</Link>
+          <Link href={"/"}>Página inicial</Link>
+        </Button>
+
+        <Button asChild>
+          <Link href={"/imagem"}>Criar</Link>
         </Button>
       </div>
 
-      <div className="flex">
+      <div className="flex w-[50%]">
         <Input type="search" className="rounded-r-none" />
         <Button className="rounded-l-none">
           <IoMdSearch size={30} />
@@ -42,9 +48,9 @@ export const Header = () => {
       </div>
 
       {userAuth === undefined ? (
-        <Link href={"/user"} className="py-2 px-4 bg-zinc-500">
-          Login
-        </Link>
+        <Button asChild variant={"outline"}>
+          <Link href={"/user"}>Login</Link>
+        </Button>
       ) : (
         <DropdownMenu>
           <DropdownMenuTrigger className="flex items-center">
@@ -61,15 +67,30 @@ export const Header = () => {
             <DropdownMenuLabel>Usuario</DropdownMenuLabel>
             <DropdownMenuSeparator />
 
-            <Button variant={"link"} onClick={signOutUser}>
-              Criar
-            </Button>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => push("/perfil")}
+            >
+              Perfil
+            </DropdownMenuItem>
 
             <DropdownMenuSeparator />
 
-            <Button variant={"secondary"} onClick={signOutUser}>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => push("/imagem")}
+            >
+              Criar
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem
+              className="cursor-pointer focus:bg-red-100"
+              onClick={signOutUser}
+            >
               Sair
-            </Button>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )}

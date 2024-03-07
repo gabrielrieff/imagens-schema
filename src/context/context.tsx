@@ -7,10 +7,11 @@ import {
   signOut,
 } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import { auth, db } from "~/firebase/firebaseConnec";
+
 import { usePathname, useRouter } from "next/navigation";
 
 import { ReactNode, createContext, useEffect, useState } from "react";
-import { auth, db } from "~/firebase/firebaseConnec";
 import { authUserModelProps, createUserModelProps } from "~/model/userModel";
 
 type AuthContextData = {
@@ -26,45 +27,55 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { push } = useRouter();
   const pathname = usePathname();
 
-  const [userAuth, setUserAuth] = useState<authUserModelProps | undefined>();
+  const [userAuth, setUserAuth] = useState<authUserModelProps>();
 
   const getUserFirebase = async (id: string) => {
     const userRef = doc(db, "users", id);
 
     await getDoc(userRef).then((snapshot) => {
-      const serSnapshot = snapshot.data();
-      if (serSnapshot) {
+      const userSnapshot = snapshot.data();
+
+      if (userSnapshot) {
         setUserAuth({
-          email: serSnapshot.email,
-          name: serSnapshot.name,
-          UserID: serSnapshot.id,
+          email: userSnapshot.email,
+          name: userSnapshot.name,
+          UserID: userSnapshot.id,
+          user: userSnapshot.user,
         });
       }
     });
   };
 
+  async function checkLogin() {
+    onAuthStateChanged(auth, (user) => {
+      if (user?.uid) {
+        getUserFirebase(user.uid);
+      } else {
+        setUserAuth(undefined);
+      }
+    });
+  }
   useEffect(() => {
-    async function checkLogin() {
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          getUserFirebase(user.uid);
-        } else {
-          setUserAuth(undefined);
-        }
-      });
-    }
+    if (userAuth !== undefined) return;
 
     checkLogin();
   }, []);
 
   useEffect(() => {
+    if (userAuth === undefined) return;
+
     async function verifyUser() {
-      if (pathname === "/user" && !userAuth) {
+      if (pathname === "/user" && userAuth !== undefined) {
         push("/");
       }
+
+      if (pathname === "/perfil" && userAuth === undefined) {
+        push("/user");
+      }
     }
+
     verifyUser();
-  }, [pathname]);
+  }, [pathname, userAuth]);
 
   const signIn = async (email: string, password: string) => {
     const user = await signInWithEmailAndPassword(auth, email, password)
@@ -81,7 +92,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signOutUser = async () => {
     await signOut(auth);
-
+    setUserAuth(undefined);
     push("/user");
   };
 
