@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useContext } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { AuthContext } from "~/context/context";
 import {
   DropdownMenu,
@@ -13,7 +14,6 @@ import {
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { IoIosArrowDown, IoMdSearch } from "react-icons/io";
-import { usePathname, useRouter } from "next/navigation";
 
 export const Header = () => {
   const { userAuth, signOutUser } = useContext(AuthContext);
@@ -61,7 +61,7 @@ export const Header = () => {
               className="flex items-center justify-center w-[30px] h-[30px] p-4 
           bg-slate-300 hover:bg-accent rounded-full font-bold text-sm"
             >
-              {userAuth.name.substring(0, 1).toLocaleUpperCase()}
+              {userAuth.firstName.substring(0, 1).toLocaleUpperCase()}
             </span>
             <IoIosArrowDown size={20} />
           </DropdownMenuTrigger>

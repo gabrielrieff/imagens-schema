@@ -25,9 +25,9 @@ export const FormRegister = () => {
   type formDataProps = z.infer<typeof schema>;
 
   const registerUser = async (data: formDataProps) => {
-    const { email, name, password, user } = data;
+    const { email, firstName, lastName, password, user } = data;
 
-    await createUser({ email, name, password, user });
+    await createUser({ email, firstName, lastName, password, user });
   };
 
   function handleInvisiblePassword() {
@@ -35,7 +35,7 @@ export const FormRegister = () => {
   }
 
   return (
-    <Card className="w-[350px] h-full">
+    <Card className="w-[450px] h-full">
       <form
         autoComplete="off"
         onSubmit={handleSubmit(registerUser)}
@@ -49,13 +49,26 @@ export const FormRegister = () => {
         </CardHeader>
 
         <CardContent className="flex flex-col gap-3">
-          <label className="flex flex-col">
+          <label className="flex gap-2">
             <div className="flex flex-col">
               <span>Nome</span>
-              <Input autoComplete="off" {...register("name")} type="text" />
-              {errors.name && (
+              <Input
+                autoComplete="off"
+                {...register("firstName")}
+                type="text"
+              />
+              {errors.firstName && (
                 <span className="text-red-700 text-xs">
-                  {errors.name.message}
+                  {errors.firstName.message}
+                </span>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <span>Sobrenome</span>
+              <Input autoComplete="off" {...register("lastName")} type="text" />
+              {errors.lastName && (
+                <span className="text-red-700 text-xs">
+                  {errors.lastName.message}
                 </span>
               )}
             </div>

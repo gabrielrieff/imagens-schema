@@ -61,6 +61,8 @@ export default function Imagem() {
         await setDoc(doc(db, "images", imgID), {
           urlImage,
           imgID,
+          imageName: file.name,
+          author: `${userAuth?.firstName} ${userAuth?.lastName}`,
           userID: userAuth?.UserID,
           description,
           title,

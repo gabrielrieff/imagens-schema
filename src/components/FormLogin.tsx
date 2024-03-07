@@ -34,7 +34,7 @@ export const FormLogin = () => {
   }
 
   return (
-    <Card className="w-[350px] h-full">
+    <Card className="w-[450px] h-full">
       <form
         onSubmit={handleSubmit(authUser)}
         autoComplete="off"
