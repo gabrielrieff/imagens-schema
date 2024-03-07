@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-export const useAddImageSchema = () => {
+export const useImageSchema = () => {
   const schema = z.object({
     description: z
       .string()

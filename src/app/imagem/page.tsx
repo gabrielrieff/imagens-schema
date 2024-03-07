@@ -12,13 +12,13 @@ import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Progress } from "~/components/ui/progress";
 import { Textarea } from "~/components/ui/textarea";
-import { useAddImageSchema } from "~/components/schema/schemaAddImage";
+import { useImageSchema } from "~/app/imagem/schemaImage";
 
 export default function Imagem() {
   const { userAuth } = useContext(AuthContext);
   const [progress, setProgress] = useState(0);
 
-  const { handleSubmit, schema, errors, register } = useAddImageSchema();
+  const { handleSubmit, schema, errors, register } = useImageSchema();
   type formDataProps = z.infer<typeof schema>;
 
   function extrairToken(url: string) {

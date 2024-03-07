@@ -8,7 +8,6 @@ import { imagesProps } from "./@types/imagetype";
 import { useContext, useEffect, useState } from "react";
 
 import Image from "next/image";
-import { Header } from "~/components/shared/Header";
 import { Button } from "~/components/ui/button";
 import { FaDownload } from "react-icons/fa6";
 import { getImages } from "~/helpers/getImages";

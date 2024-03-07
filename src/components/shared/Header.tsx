@@ -13,8 +13,6 @@ import {
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { IoIosArrowDown, IoMdSearch } from "react-icons/io";
-import { Dialog, DialogTrigger } from "../ui/dialog";
-import { AddImagem } from "./AddImagem";
 import { useRouter } from "next/navigation";
 
 export const Header = () => {
