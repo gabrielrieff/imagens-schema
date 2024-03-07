@@ -5,7 +5,6 @@ import { AuthContext } from "~/context/context";
 
 import Image from "next/image";
 import { Button } from "~/components/ui/button";
-import { MdArrowBack } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import { imagesProps } from "../@types/imagetype";
 import { getImagesUser } from "~/helpers/getImagesUser";
