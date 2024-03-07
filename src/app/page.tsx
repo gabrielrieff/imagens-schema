@@ -1,21 +1,18 @@
 "use client";
-import { AuthContext } from "~/context/context";
 
-import { db } from "~/firebase/firebaseConnec";
-import { collection, onSnapshot } from "firebase/firestore";
-import { imagesProps } from "./@types/imagetype";
+import { useEffect, useState } from "react";
 
-import { useContext, useEffect, useState } from "react";
+import { loadImages } from "~/helpers/loadImages";
+import { getImages } from "~/helpers/getImages";
 
 import Image from "next/image";
+import { ImageComp } from "../components/shared/image";
 import { Button } from "~/components/ui/button";
 import { FaDownload } from "react-icons/fa6";
-import { getImages } from "~/helpers/getImages";
-import { downloadImage } from "~/helpers/downloadImage";
+
+import { imagesProps } from "./@types/imagetype";
 
 export default function Home() {
-  const { userAuth } = useContext(AuthContext);
-
   const [arrayImages, setArrayImages] = useState<imagesProps[]>([]);
 
   useEffect(() => {
@@ -23,13 +20,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const loadImages = async () => {
-      const unsub = onSnapshot(collection(db, "images"), (snapshot) => {
-        getImages(setArrayImages);
-      });
-    };
-
-    loadImages();
+    loadImages(setArrayImages);
   }, []);
 
   return (
@@ -42,30 +33,31 @@ export default function Home() {
         ) : (
           <section className="columns-6 gap-3 max-w-[1200px]">
             {arrayImages.map((image) => (
-              <div className="relative group" key={image.imgID}>
-                <Image
-                  src={image.urlImage}
-                  width={200}
-                  height={250}
-                  alt=""
-                  className="rounded-lg mb-3 w-full bg-no-repeat"
-                />
-                <div className="absolute inset-0 bg-black rounded-lg  opacity-0 group-hover:opacity-50 transition duration-300"></div>
+              <ImageComp.Root
+                key={image.imgID}
+                Image={
+                  <Image
+                    src={image.urlImage}
+                    width={200}
+                    height={250}
+                    alt={image.title}
+                    className="rounded-lg mb-3 w-full bg-no-repeat"
+                  />
+                }
+              >
+                <ImageComp.ImageHeader>
+                  <span>Criador: {image.author}</span>
+                </ImageComp.ImageHeader>
 
-                <div className="absolute inset-0 flex items-start justify-start text-white text-xs opacity-0 group-hover:opacity-100 transition duration-300 mt-1 ml-1">
-                  {image.title}
-                </div>
-
-                <div className="absolute inset-0 flex items-end justify-end opacity-0 group-hover:opacity-100 transition duration-300 mb-1 mr-1">
+                <ImageComp.ImageFooter>
                   <Button
-                    onClick={() => downloadImage(image.urlImage, image.title)}
                     variant={"ghost"}
                     className="bg-white h-[30px] p-2 rounded-full hover:bg-gray-200"
                   >
                     <FaDownload size={15} />
                   </Button>
-                </div>
-              </div>
+                </ImageComp.ImageFooter>
+              </ImageComp.Root>
             ))}
           </section>
         )}
