@@ -1,13 +1,15 @@
 export type authUserModelProps = {
   UserID: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  name: string;
   user: string;
 };
 
 export type createUserModelProps = {
   email: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   password: string;
   user: string;
 };

@@ -22,6 +22,8 @@ export async function getImagesUser(
       description: imagedata.description,
       imgID: imagedata.imgID,
       title: imagedata.title,
+      author: imagedata.author,
+      imageName: imagedata.imageName,
       urlImage: imagedata.urlImage,
       userID: imagedata.userID,
     });

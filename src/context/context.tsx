@@ -18,7 +18,13 @@ type AuthContextData = {
   userAuth?: authUserModelProps;
   signIn: (email: string, password: string) => void;
   signOutUser: () => void;
-  createUser: ({ email, name, password, user }: createUserModelProps) => void;
+  createUser: ({
+    email,
+    firstName,
+    lastName,
+    password,
+    user,
+  }: createUserModelProps) => void;
 };
 
 export const AuthContext = createContext({} as AuthContextData);
@@ -38,7 +44,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (userSnapshot) {
         setUserAuth({
           email: userSnapshot.email,
-          name: userSnapshot.name,
+          firstName: userSnapshot.firstName,
+          lastName: userSnapshot.lastName,
           UserID: userSnapshot.id,
           user: userSnapshot.user,
         });
@@ -98,7 +105,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const createUser = async ({
     email,
-    name,
+    firstName,
+    lastName,
     password,
     user,
   }: createUserModelProps) => {
@@ -114,7 +122,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       id: response.uid,
       email,
       user,
-      name,
+      firstName,
+      lastName,
       created_at: response.metadata.creationTime,
     });
 

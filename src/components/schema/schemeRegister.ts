@@ -4,13 +4,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 export const useRegisterSchema = () => {
   const schema = z.object({
-    name: z.string().min(3, { message: "Por gentileza informe um nome" }),
-    user: z.string().min(2, { message: "Por gentileza informe um usuário" }),
+    firstName: z
+      .string()
+      .min(3, { message: "Por gentileza informe seu primeiro nome." }),
+    lastName: z
+      .string()
+      .min(3, { message: "Por gentileza informe seu sobrenome nome." }),
+    user: z.string().min(2, { message: "Por gentileza informe um usuário." }),
     email: z
       .string()
-      .min(1, { message: "Por gentileza informe um email" })
-      .email({ message: "Por gentileza informe um email valido" }),
-    password: z.string().min(3, { message: "Por gentileza forneça uma senha" }),
+      .min(1, { message: "Por gentileza informe um email." })
+      .email({ message: "Por gentileza informe um email valido." }),
+    password: z
+      .string()
+      .min(3, { message: "Por gentileza forneça uma senha." }),
   });
 
   type formDataProps = z.infer<typeof schema>;
@@ -24,7 +31,8 @@ export const useRegisterSchema = () => {
     criteriaMode: "all",
     resolver: zodResolver(schema),
     defaultValues: {
-      name: "",
+      firstName: "",
+      lastName: "",
       user: "",
       email: "",
       password: "",
