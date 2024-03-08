@@ -8,9 +8,12 @@ import { Button } from "~/components/ui/button";
 import { FaDownload, FaSpinner } from "react-icons/fa6";
 
 import { AuthContext } from "~/context/context";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Home() {
   const { images, limitedImages, setLimitedImages } = useContext(AuthContext);
+  const { push } = useRouter();
 
   const [loadingImages, setLoadingImages] = useState(true);
 
@@ -37,31 +40,37 @@ export default function Home() {
           <>
             <section className="columns-6 xl:columns-4 md:columns-3 sm:columns-2 gap-4 max-w-[1200px]">
               {images.map((image) => (
-                <ImageComp.Root
-                  key={image.imgID}
-                  Image={
-                    <Image
-                      src={image.urlImage}
-                      width={200}
-                      height={250}
-                      alt={image.title}
-                      className="rounded-lg mb-3 w-full bg-no-repeat"
-                    />
-                  }
+                <button
+                  key={image?.imgID}
+                  onClick={() => push(`/pin/${image.imgID}`)}
                 >
-                  <ImageComp.ImageHeader>
-                    <span>Criador: {image.author}</span>
-                  </ImageComp.ImageHeader>
+                  <ImageComp.Root
+                    Image={
+                      <Image
+                        src={image.urlImage}
+                        width={200}
+                        height={250}
+                        alt={image.title}
+                        className="rounded-lg mb-3 w-full bg-no-repeat"
+                      />
+                    }
+                  >
+                    <ImageComp.ImageHeader>
+                      <Link href={`/pin/${image.imgID}`}>
+                        Criador: {image.author}
+                      </Link>
+                    </ImageComp.ImageHeader>
 
-                  <ImageComp.ImageFooter>
-                    <Button
-                      variant={"ghost"}
-                      className="bg-white h-[30px] p-2 rounded-full hover:bg-gray-200"
-                    >
-                      <FaDownload size={15} />
-                    </Button>
-                  </ImageComp.ImageFooter>
-                </ImageComp.Root>
+                    <ImageComp.ImageFooter>
+                      <Button
+                        variant={"ghost"}
+                        className="bg-white h-[30px] p-2 rounded-full hover:bg-gray-200"
+                      >
+                        <FaDownload size={15} />
+                      </Button>
+                    </ImageComp.ImageFooter>
+                  </ImageComp.Root>
+                </button>
               ))}
             </section>
 
