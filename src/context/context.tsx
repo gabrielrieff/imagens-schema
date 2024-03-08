@@ -11,8 +11,18 @@ import { auth, db } from "~/firebase/firebaseConnec";
 
 import { usePathname, useRouter } from "next/navigation";
 
-import { ReactNode, createContext, useEffect, useState } from "react";
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  createContext,
+  useEffect,
+  useState,
+} from "react";
 import { authUserModelProps, createUserModelProps } from "~/model/userModel";
+import { ImageProps } from "~/app/@types/imagetype";
+import { getImages } from "~/helpers/getImages";
+import { loadImages } from "~/helpers/loadImages";
 
 type AuthContextData = {
   userAuth?: authUserModelProps;
@@ -25,6 +35,12 @@ type AuthContextData = {
     password,
     user,
   }: createUserModelProps) => void;
+
+  images: Array<ImageProps>;
+  setImages: Dispatch<SetStateAction<Array<ImageProps>>>;
+
+  limitedImages: number;
+  setLimitedImages: Dispatch<SetStateAction<number>>;
 };
 
 export const AuthContext = createContext({} as AuthContextData);
@@ -34,6 +50,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
 
   const [userAuth, setUserAuth] = useState<authUserModelProps>();
+  const [images, setImages] = useState<Array<ImageProps>>([]);
+  const [limitedImages, setLimitedImages] = useState<number>(5);
 
   const getUserFirebase = async (id: string) => {
     const userRef = doc(db, "users", id);
@@ -64,9 +82,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
   useEffect(() => {
     if (userAuth !== undefined) return;
-
     checkLogin();
-  }, []);
+  }, [userAuth, setLimitedImages]);
+
+  useEffect(() => {
+    loadImages(setImages, limitedImages);
+    getImages(setImages, limitedImages);
+  }, [limitedImages]);
 
   useEffect(() => {
     if (userAuth === undefined) return;
@@ -131,7 +153,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ userAuth, signIn, createUser, signOutUser }}>
+    <AuthContext.Provider
+      value={{
+        userAuth,
+        signIn,
+        createUser,
+        signOutUser,
+        images,
+        setImages,
+        limitedImages,
+        setLimitedImages,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -1,28 +1,38 @@
 "use client";
-import Link from "next/link";
-import { useContext } from "react";
+import { KeyboardEvent, useContext, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { AuthContext } from "~/context/context";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+
+import Link from "next/link";
+
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { IoIosArrowDown, IoMdSearch } from "react-icons/io";
+import { IoMdSearch } from "react-icons/io";
+import { filterImage } from "~/helpers/filterImage";
+import { DropUser } from "./DropUser";
 
 export const Header = () => {
-  const { userAuth, signOutUser } = useContext(AuthContext);
+  const { userAuth, setImages } = useContext(AuthContext);
   const { push } = useRouter();
   const path = usePathname();
 
+  const [stringSeach, setStringSeach] = useState<string>("");
+
+  async function search() {
+    if (path !== "/") {
+      push("/");
+    }
+    await filterImage(setImages, stringSeach);
+  }
+
+  function changePressKeyEntre(event: KeyboardEvent) {
+    if (event.key === "Enter") {
+      search();
+    }
+  }
   return (
     <header
-      className={`flex items-center justify-around h-[80px] w-[90%] max-w-[1200px] ${
+      className={`flex items-center justify-around h-[80px] w-[90%] ms:w-[100%] max-w-[1200px] xl:mt-4 ${
         path === "/user" && "hidden"
       }`}
     >
@@ -34,18 +44,24 @@ export const Header = () => {
           IS
         </Link>
 
-        <Button asChild>
+        <Button asChild className="sm:px-2 sm:text-xs">
           <Link href={"/"}>Página inicial</Link>
         </Button>
 
-        <Button asChild>
+        <Button asChild className="ms:hidden">
           <Link href={"/imagem"}>Criar</Link>
         </Button>
       </div>
 
       <div className="flex w-[50%]">
-        <Input type="search" className="rounded-r-none" />
-        <Button className="rounded-l-none">
+        <Input
+          type="search"
+          placeholder="Pesquisar"
+          className="rounded-r-none md:rounded-md"
+          onChange={(e) => setStringSeach(e.target.value)}
+          onKeyUp={changePressKeyEntre}
+        />
+        <Button className="rounded-l-none md:hidden" onClick={search}>
           <IoMdSearch size={30} />
         </Button>
       </div>
@@ -55,47 +71,7 @@ export const Header = () => {
           <Link href={"/user"}>Login</Link>
         </Button>
       ) : (
-        <DropdownMenu>
-          <DropdownMenuTrigger className="flex items-center">
-            <span
-              className="flex items-center justify-center w-[30px] h-[30px] p-4 
-          bg-slate-300 hover:bg-accent rounded-full font-bold text-sm"
-            >
-              {userAuth.firstName.substring(0, 1).toLocaleUpperCase()}
-            </span>
-            <IoIosArrowDown size={20} />
-          </DropdownMenuTrigger>
-
-          <DropdownMenuContent className="flex flex-col w-ful">
-            <DropdownMenuLabel>Usuario</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={() => push("/perfil")}
-            >
-              Perfil
-            </DropdownMenuItem>
-
-            <DropdownMenuSeparator />
-
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={() => push("/imagem")}
-            >
-              Criar
-            </DropdownMenuItem>
-
-            <DropdownMenuSeparator />
-
-            <DropdownMenuItem
-              className="cursor-pointer focus:bg-red-100"
-              onClick={signOutUser}
-            >
-              Sair
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <DropUser />
       )}
     </header>
   );

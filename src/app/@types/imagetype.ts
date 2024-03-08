@@ -1,4 +1,4 @@
-export interface imagesProps {
+export interface ImageProps {
   description: string;
   imgID: string;
   title: string;

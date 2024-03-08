@@ -11,7 +11,7 @@ import Image from "next/image";
 import { Button } from "~/components/ui/button";
 import { ImageComp } from "~/components/shared/image";
 import { MdClose } from "react-icons/md";
-import { imagesProps } from "../@types/imagetype";
+import { ImageProps } from "../@types/imagetype";
 import { deleteImage } from "~/helpers/deleteImage";
 import { loadImages } from "~/helpers/loadImages";
 
@@ -20,7 +20,7 @@ export default function Perfil() {
   const { push } = useRouter();
 
   const [SavedAndCreated, setSavedAndCreated] = useState(true);
-  const [images, setImages] = useState<imagesProps[]>([]);
+  const [images, setImages] = useState<ImageProps[]>([]);
 
   function toAlterSessionSavedAndCreated() {
     setSavedAndCreated(!SavedAndCreated);
@@ -37,7 +37,7 @@ export default function Perfil() {
   }, []);
   return (
     <main className="flex flex-col items-center h-screen gap-7">
-      <section className="flex items-center justify-center flex-col gap-10 w-[1200px]">
+      <section className="flex items-center justify-center flex-col gap-10 max-w-[1200px]">
         <div className="flex items-center flex-col gap-4">
           <span className="w-28 h-28 rounded-full bg-zinc-200 flex items-center justify-center text-6xl font-semibold">
             {userAuth?.firstName.substring(0, 1).toLocaleUpperCase()}
@@ -76,7 +76,7 @@ export default function Perfil() {
           </Button>
         </div>
 
-        <div className="max-w-[1200px] w-[70%]">
+        <div>
           <div className="w-full flex justify-center">
             {SavedAndCreated === true ? (
               <div className="flex flex-col items-center gap-4">
@@ -88,7 +88,7 @@ export default function Perfil() {
                     Criar imagem
                   </Button>
                 </div>
-                <div className="max-w-[1200px] flex flex-wrap gap-3">
+                <div className=" columns-7 xl:columns-5 md:columns-3 gap-4 mb-4">
                   {images.length > 0 ? (
                     images.map((image) => (
                       <ImageComp.Root
@@ -99,7 +99,7 @@ export default function Perfil() {
                             width={100}
                             height={150}
                             alt={image.title}
-                            className="rounded-lg w-full bg-no-repeat"
+                            className="rounded-lg w-full bg-no-repeat mb-4"
                           />
                         }
                       >

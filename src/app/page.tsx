@@ -1,65 +1,88 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
-import { loadImages } from "~/helpers/loadImages";
-import { getImages } from "~/helpers/getImages";
+import { useContext, useEffect, useState } from "react";
 
 import Image from "next/image";
 import { ImageComp } from "../components/shared/image";
 import { Button } from "~/components/ui/button";
-import { FaDownload } from "react-icons/fa6";
+import { FaDownload, FaSpinner } from "react-icons/fa6";
 
-import { imagesProps } from "./@types/imagetype";
+import { AuthContext } from "~/context/context";
 
 export default function Home() {
-  const [arrayImages, setArrayImages] = useState<imagesProps[]>([]);
+  const { images, limitedImages, setLimitedImages } = useContext(AuthContext);
+
+  const [loadingImages, setLoadingImages] = useState(true);
+
+  function handleMaxImage() {
+    setLoadingImages(false);
+
+    setLimitedImages(limitedImages + 2);
+  }
 
   useEffect(() => {
-    getImages(setArrayImages);
-  }, []);
-
-  useEffect(() => {
-    loadImages(setArrayImages);
-  }, []);
+    setLoadingImages(true);
+  }, [images]);
 
   return (
     <>
-      <main className="flex flex-col items-center h-screen gap-7">
-        {arrayImages.length <= 0 ? (
+      <main className="flex flex-col items-center h-full gap-7 xl:px-4 mb-4">
+        {images.length <= 0 ? (
           <section className="h-full flex items-center">
             <p>Não encontramos imagens na base de dados</p>
           </section>
         ) : (
-          <section className="columns-6 gap-3 max-w-[1200px]">
-            {arrayImages.map((image) => (
-              <ImageComp.Root
-                key={image.imgID}
-                Image={
-                  <Image
-                    src={image.urlImage}
-                    width={200}
-                    height={250}
-                    alt={image.title}
-                    className="rounded-lg mb-3 w-full bg-no-repeat"
-                  />
-                }
-              >
-                <ImageComp.ImageHeader>
-                  <span>Criador: {image.author}</span>
-                </ImageComp.ImageHeader>
+          <>
+            <section className="columns-6 xl:columns-4 md:columns-3 sm:columns-2 gap-4 max-w-[1200px]">
+              {images.map((image) => (
+                <ImageComp.Root
+                  key={image.imgID}
+                  Image={
+                    <Image
+                      src={image.urlImage}
+                      width={200}
+                      height={250}
+                      alt={image.title}
+                      className="rounded-lg mb-3 w-full bg-no-repeat"
+                    />
+                  }
+                >
+                  <ImageComp.ImageHeader>
+                    <span>Criador: {image.author}</span>
+                  </ImageComp.ImageHeader>
 
-                <ImageComp.ImageFooter>
-                  <Button
-                    variant={"ghost"}
-                    className="bg-white h-[30px] p-2 rounded-full hover:bg-gray-200"
-                  >
-                    <FaDownload size={15} />
-                  </Button>
-                </ImageComp.ImageFooter>
-              </ImageComp.Root>
-            ))}
-          </section>
+                  <ImageComp.ImageFooter>
+                    <Button
+                      variant={"ghost"}
+                      className="bg-white h-[30px] p-2 rounded-full hover:bg-gray-200"
+                    >
+                      <FaDownload size={15} />
+                    </Button>
+                  </ImageComp.ImageFooter>
+                </ImageComp.Root>
+              ))}
+            </section>
+
+            {limitedImages === images.length && (
+              <Button
+                variant={"destructive"}
+                className={`w-[70%] `}
+                onClick={handleMaxImage}
+              >
+                {loadingImages === true ? (
+                  <>Buscar por mais images {`${loadingImages}`}</>
+                ) : (
+                  <span className="flex items-center justify-center gap-2">
+                    Carregando mais imagens {`${loadingImages}`}
+                    <FaSpinner
+                      size={25}
+                      className={`${!loadingImages && "animate-spin"}`}
+                    />
+                  </span>
+                )}
+              </Button>
+            )}
+          </>
         )}
       </main>
     </>

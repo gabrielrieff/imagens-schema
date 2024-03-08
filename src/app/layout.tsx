@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <main className="flex flex-col items-center h-screen gap-7">
+        <main className="flex flex-col items-center gap-7">
           <AuthProvider>
             <Header />
 
