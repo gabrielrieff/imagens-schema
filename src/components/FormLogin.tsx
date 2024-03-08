@@ -43,7 +43,7 @@ export const FormLogin = () => {
         <CardHeader>
           <CardTitle>Login</CardTitle>
           <CardDescription>
-            Deploy your new project in one-click.
+            Insira seu e-mail e senha para acessar sua conta.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col justify-center gap-3">

@@ -21,12 +21,14 @@ export default function Home() {
   }
 
   useEffect(() => {
-    setLoadingImages(true);
+    setTimeout(() => {
+      setLoadingImages(true);
+    }, 1000);
   }, [images]);
 
   return (
     <>
-      <main className="flex flex-col items-center h-full gap-7 xl:px-4 mb-4">
+      <main className="flex flex-col justify-between items-center h-full gap-7 xl:px-4 mb-4">
         {images.length <= 0 ? (
           <section className="h-full flex items-center">
             <p>Não encontramos imagens na base de dados</p>
@@ -63,23 +65,27 @@ export default function Home() {
               ))}
             </section>
 
-            {limitedImages === images.length && (
+            {limitedImages === images.length ? (
               <Button
                 variant={"destructive"}
                 className={`w-[70%] `}
                 onClick={handleMaxImage}
               >
                 {loadingImages === true ? (
-                  <>Buscar por mais images {`${loadingImages}`}</>
+                  <>Buscar por mais images</>
                 ) : (
                   <span className="flex items-center justify-center gap-2">
-                    Carregando mais imagens {`${loadingImages}`}
+                    Carregando mais imagens
                     <FaSpinner
                       size={25}
                       className={`${!loadingImages && "animate-spin"}`}
                     />
                   </span>
                 )}
+              </Button>
+            ) : (
+              <Button variant={"default"} className={`w-[70%]`} disabled>
+                Não há mais imagens no banco de dados
               </Button>
             )}
           </>

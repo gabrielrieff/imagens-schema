@@ -44,7 +44,8 @@ export const FormRegister = () => {
         <CardHeader>
           <CardTitle>Cadastre-se</CardTitle>
           <CardDescription>
-            Deploy your new project in one-click.
+            Formulario de registro, preencha os dados a baixo para que possa se
+            cadastrar.
           </CardDescription>
         </CardHeader>
 

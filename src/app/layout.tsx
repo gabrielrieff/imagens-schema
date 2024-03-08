@@ -1,6 +1,6 @@
+import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
 import { AuthProvider } from "~/context/context";
 import { Header } from "~/components/shared/Header";
 
@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <main className="flex flex-col items-center gap-7">
+        <main className="flex flex-col items-center gap-7 h-screen">
           <AuthProvider>
             <Header />
 
