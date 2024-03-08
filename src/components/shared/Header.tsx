@@ -1,5 +1,11 @@
 "use client";
-import { KeyboardEvent, useContext, useState } from "react";
+import {
+  ChangeEvent,
+  FormEvent,
+  KeyboardEvent,
+  useContext,
+  useState,
+} from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { AuthContext } from "~/context/context";
 
@@ -7,16 +13,19 @@ import Link from "next/link";
 
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { IoMdSearch } from "react-icons/io";
+import { IoMdClose, IoMdSearch } from "react-icons/io";
 import { filterImage } from "~/helpers/filterImage";
 import { DropUser } from "./DropUser";
+import { getImages } from "~/helpers/getImages";
 
 export const Header = () => {
-  const { userAuth, setImages } = useContext(AuthContext);
+  const { userAuth, setImages, limitedImages } = useContext(AuthContext);
   const { push } = useRouter();
   const path = usePathname();
 
   const [stringSeach, setStringSeach] = useState<string>("");
+  const [inputSearch, setInputSearch] = useState<string>("");
+  const [typing, setTyping] = useState<boolean>(false);
 
   async function search() {
     if (path !== "/") {
@@ -29,6 +38,23 @@ export const Header = () => {
     if (event.key === "Enter") {
       search();
     }
+  }
+
+  function typingInSearch() {
+    if (!inputSearch) return;
+
+    if (inputSearch !== "") {
+      setStringSeach(inputSearch);
+      setTyping(true);
+    } else {
+      setTyping(false);
+    }
+  }
+
+  function cleanFilter() {
+    getImages(setImages, limitedImages);
+    setInputSearch("");
+    setTyping(false);
   }
   return (
     <header
@@ -53,17 +79,33 @@ export const Header = () => {
         </Button>
       </div>
 
-      <div className="flex w-[50%]">
+      <div className="relative w-[50%]">
+        <button
+          className="h-full absolute flex items-center justify-center top-0 left-0 px-2 border-r-[1px] border-slate-300"
+          onClick={search}
+        >
+          <IoMdSearch size={20} />
+        </button>
         <Input
           type="search"
+          value={inputSearch}
           placeholder="Pesquisar"
-          className="rounded-r-none md:rounded-md"
-          onChange={(e) => setStringSeach(e.target.value)}
+          className="pl-11 pr-11"
+          onChange={(event) => {
+            setInputSearch(event.target.value);
+            typingInSearch();
+          }}
           onKeyUp={changePressKeyEntre}
         />
-        <Button className="rounded-l-none md:hidden" onClick={search}>
-          <IoMdSearch size={30} />
-        </Button>
+        {typing && (
+          <button
+            className="flex items-center justify-center p-1 absolute focus:animate-pulse
+             text-white bg-slate-950 rounded-full hover:animate-pulse top-[25%] right-1"
+            onClick={cleanFilter}
+          >
+            <IoMdClose size={15} />
+          </button>
+        )}
       </div>
 
       {userAuth === undefined ? (

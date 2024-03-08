@@ -79,11 +79,20 @@ const config = {
           from: { transform: "rotate(0deg)" },
           to: { transform: "rotate(360deg)" },
         },
+        pulse: {
+          "0%": {
+            "box-shadow": "0 0 0 0px rgba(0, 0, 0, 1)",
+          },
+          "100%": {
+            "box-shadow": "0 0 0 10px rgba(0, 0, 0, 0)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         spin: "spin 3s linear infinite",
+        pulse: "pulse 1.5s linear infinite",
       },
     },
   },
