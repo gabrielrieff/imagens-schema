@@ -14,9 +14,20 @@ import { MdClose } from "react-icons/md";
 import { ImageProps } from "../@types/imagetype";
 import { deleteImage } from "~/helpers/deleteImage";
 import { loadImages } from "~/helpers/loadImages";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "~/components/ui/alert-dialog";
 
 export default function Perfil() {
-  const { userAuth } = useContext(AuthContext);
+  const { userAuth, limitedImages } = useContext(AuthContext);
   const { push } = useRouter();
 
   const [SavedAndCreated, setSavedAndCreated] = useState(true);
@@ -36,7 +47,7 @@ export default function Perfil() {
     loadImages(setImages);
   }, []);
   return (
-    <main className="flex flex-col items-center h-screen gap-7">
+    <main className="flex flex-col items-center h-screen gap-7 mt-24">
       <section className="flex items-center justify-center flex-col gap-10 max-w-[1200px]">
         <div className="flex items-center flex-col gap-4">
           <span className="w-28 h-28 rounded-full bg-zinc-200 flex items-center justify-center text-6xl font-semibold">
@@ -104,15 +115,42 @@ export default function Perfil() {
                         }
                       >
                         <ImageComp.ImageFooter className="justify-end items-start mr-1 mt-1">
-                          <Button
-                            onClick={() =>
-                              deleteImage(image.imageName, image.imgID)
-                            }
-                            variant={"ghost"}
-                            className="bg-white h-[30px] p-1 hover:bg-gray-200"
-                          >
-                            <MdClose size={20} />
-                          </Button>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button
+                                variant="outline"
+                                className="bg-white h-[30px] p-1 hover:bg-gray-200"
+                              >
+                                <MdClose size={20} />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                  Tem certeza absoluta que deseja deleta essa
+                                  imagem?
+                                </AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  This action cannot be undone. This will
+                                  permanently delete your account and remove
+                                  your data from our servers.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter className="flex-row items-center justify-end gap-3">
+                                <AlertDialogAction
+                                  className="bg-emerald-500 hover:bg-emerald-700"
+                                  onClick={() =>
+                                    deleteImage(image.imageName, image.imgID)
+                                  }
+                                >
+                                  Confirmar
+                                </AlertDialogAction>
+                                <AlertDialogCancel className="bg-red-500 hover:bg-red-700 text-white hover:text-white m-0">
+                                  Cancelar
+                                </AlertDialogCancel>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
                         </ImageComp.ImageFooter>
                       </ImageComp.Root>
                     ))
