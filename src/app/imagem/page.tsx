@@ -13,6 +13,7 @@ import { Input } from "~/components/ui/input";
 import { Progress } from "~/components/ui/progress";
 import { Textarea } from "~/components/ui/textarea";
 import { useImageSchema } from "~/app/imagem/schemaImage";
+import { toast } from "react-toastify";
 
 export default function Imagem() {
   const { userAuth } = useContext(AuthContext);
@@ -36,39 +37,46 @@ export default function Imagem() {
     const file = image[0];
 
     if (!file) return;
-    const storageRef = ref(storage, `images/${file.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
 
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        setProgress(progress);
-      },
-      (err) => {
-        console.log(err);
-      },
-      async () => {
-        var urlImage = "";
-        await getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          urlImage = url;
-        });
+    try {
+      const storageRef = ref(storage, `images/${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
 
-        const imgID = extrairToken(urlImage);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setProgress(progress);
+        },
+        (err) => {
+          console.log(err);
+        },
+        async () => {
+          var urlImage = "";
+          await getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+            urlImage = url;
+          });
 
-        await setDoc(doc(db, "images", imgID), {
-          urlImage,
-          imgID,
-          imageName: file.name,
-          author: `${userAuth?.firstName} ${userAuth?.lastName}`,
-          userID: userAuth?.UserID,
-          description,
-          title,
-        });
-      }
-    );
+          const imgID = extrairToken(urlImage);
+
+          await setDoc(doc(db, "images", imgID), {
+            urlImage,
+            imgID,
+            imageName: file.name,
+            author: `${userAuth?.firstName} ${userAuth?.lastName}`,
+            userID: userAuth?.UserID,
+            description,
+            title,
+          });
+        }
+      );
+
+      toast.success("Imagem salva com sucesso 😁");
+    } catch (error) {
+      toast.error("Não foi possível salvar sua imagem 😔");
+    }
   };
   return (
     <main className="flex flex-col items-center h-screen gap-7 mt-24">

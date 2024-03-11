@@ -25,9 +25,10 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
+import { toast } from "react-toastify";
 
 export default function Perfil() {
-  const { userAuth, limitedImages } = useContext(AuthContext);
+  const { userAuth } = useContext(AuthContext);
   const { push } = useRouter();
 
   const [SavedAndCreated, setSavedAndCreated] = useState(true);
@@ -46,6 +47,16 @@ export default function Perfil() {
   useEffect(() => {
     loadImages(setImages);
   }, []);
+
+  function deleteImg(name: string, id: string) {
+    try {
+      deleteImage(name, id);
+
+      toast.success("Imagem deletada com sucesso 😁");
+    } catch (error) {
+      toast.error("Erro ao tentar deletar sua imagem 😔");
+    }
+  }
   return (
     <main className="flex flex-col items-center h-screen gap-7 mt-24">
       <section className="flex items-center justify-center flex-col gap-10 max-w-[1200px]">
@@ -140,7 +151,7 @@ export default function Perfil() {
                                 <AlertDialogAction
                                   className="bg-emerald-500 hover:bg-emerald-700"
                                   onClick={() =>
-                                    deleteImage(image.imageName, image.imgID)
+                                    deleteImg(image.imageName, image.imgID)
                                   }
                                 >
                                   Confirmar

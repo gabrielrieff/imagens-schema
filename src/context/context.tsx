@@ -23,6 +23,7 @@ import { authUserModelProps, createUserModelProps } from "~/model/userModel";
 import { ImageProps } from "~/app/@types/imagetype";
 import { getImages } from "~/helpers/getImages";
 import { loadImages } from "~/helpers/loadImages";
+import { toast } from "react-toastify";
 
 type AuthContextData = {
   userAuth?: authUserModelProps;
@@ -109,9 +110,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signIn = async (email: string, password: string) => {
     const user = await signInWithEmailAndPassword(auth, email, password)
       .then((response) => {
+        toast.success("Login efetuado com sucesso, ja vamos te redirecionar");
         return response.user;
       })
-      .catch((err) => {});
+      .catch((err) => {
+        toast.error(
+          "Erro ao tentar logar, por favor verifique os dados de login"
+        );
+      });
 
     if (user) {
       await getUserFirebase(user.uid);
@@ -132,24 +138,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     password,
     user,
   }: createUserModelProps) => {
-    const response = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    ).then((response) => {
-      return response.user;
-    });
+    try {
+      const response = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      ).then((response) => {
+        return response.user;
+      });
 
-    await setDoc(doc(db, "users", response.uid), {
-      id: response.uid,
-      email,
-      user,
-      firstName,
-      lastName,
-      created_at: response.metadata.creationTime,
-    });
+      await setDoc(doc(db, "users", response.uid), {
+        id: response.uid,
+        email,
+        user,
+        firstName,
+        lastName,
+        created_at: response.metadata.creationTime,
+      });
 
-    return;
+      toast.success("Usúario criado com sucesso");
+    } catch (error) {
+      toast.error("Não foi possivel cadastrar o usúario");
+    }
   };
 
   return (
