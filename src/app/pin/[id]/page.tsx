@@ -47,26 +47,26 @@ export default async function Pin({
     <section className="flex justify-around w-full max-w-[1300px]  mt-24">
       <Button
         variant={"outline"}
-        className="gap-2 absolute top-28 left-5"
+        className="gap-2 fixed top-28 left-5 sm:p-1"
         asChild
       >
         <Link href={"/"}>
           <IoArrowBackOutline size={20} />
-          Voltar
+          <span className="lg:hidden">Voltar</span>
         </Link>
       </Button>
-      <Card className="w-3/4 flex flex-row rounded-3xl">
-        <div className="w-1/2 flex">
+      <Card className="w-3/4 flex flex-row rounded-3xl ms:flex-col ms:mb-4">
+        <div className="w-1/2 flex ms:w-full">
           <Image
             alt={image.imageName}
             src={image.urlImage}
             width={400}
             height={500}
-            className="rounded-3xl rounded-e-none"
+            className="rounded-3xl rounded-e-none ms:rounded-3xl ms:w-full ms:rounded-b-none"
           />
         </div>
 
-        <div className="flex flex-col gap-10 items-start w-1/2 p-4">
+        <div className="flex flex-col gap-10 items-start w-1/2 p-4 ms:w-full">
           <div className="w-full flex ">
             <div className="w-1/2 flex justify-start">
               <Button variant={"ghost"}>

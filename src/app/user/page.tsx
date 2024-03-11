@@ -1,23 +1,19 @@
 "use client";
 
-import logo from "../../../public/logo-image-schema.png";
-
 import Link from "next/link";
-import Image from "next/image";
 import { FormLogin } from "~/components/FormLogin";
 import { FormRegister } from "~/components/FormRegister";
 
 export default function user() {
   return (
     <>
-      <main className="min-h-screen flex flex-col items-center justify-around gap-9 p-16">
-        <Image alt="image-schema" src={logo} width={250} />
-        <div className="flex gap-20">
-          <section className="h-[550px]">
+      <main className="h-full flex flex-col items-center justify-around gap-9 p-16 ms:p-2 ms:justify-normal">
+        <div className="flex gap-20 lg:flex-col">
+          <section className="h-[600px] lg:h-[400px]">
             <FormLogin />
           </section>
 
-          <section className="h-[550px]">
+          <section className="h-[600px]">
             <FormRegister />
           </section>
         </div>
