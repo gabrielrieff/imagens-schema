@@ -71,7 +71,7 @@ export default function Imagem() {
     );
   };
   return (
-    <main className="flex flex-col items-center h-screen gap-7">
+    <main className="flex flex-col items-center h-screen gap-7 mt-24">
       <div className="flex items-start">
         <span className="text-4xl font-medium">Criar uma nova imagem</span>
       </div>

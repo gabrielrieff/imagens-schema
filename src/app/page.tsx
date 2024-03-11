@@ -26,12 +26,12 @@ export default function Home() {
   useEffect(() => {
     setTimeout(() => {
       setLoadingImages(true);
-    }, 1000);
+    }, 600);
   }, [images]);
 
   return (
     <>
-      <main className="flex flex-col justify-between items-center h-full gap-7 xl:px-4 mb-4">
+      <main className="flex flex-col justify-between items-center h-full gap-7 xl:px-4 mb-4 mt-24">
         {images.length <= 0 ? (
           <section className="h-full flex items-center">
             <p>Não encontramos imagens na base de dados</p>
@@ -40,9 +40,10 @@ export default function Home() {
           <>
             <section className="columns-6 xl:columns-4 md:columns-3 sm:columns-2 gap-4 max-w-[1200px]">
               {images.map((image) => (
-                <button
+                <div
                   key={image?.imgID}
                   onClick={() => push(`/pin/${image.imgID}`)}
+                  className="cursor-zoom-in"
                 >
                   <ImageComp.Root
                     Image={
@@ -70,7 +71,7 @@ export default function Home() {
                       </Button>
                     </ImageComp.ImageFooter>
                   </ImageComp.Root>
-                </button>
+                </div>
               ))}
             </section>
 

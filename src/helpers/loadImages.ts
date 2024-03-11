@@ -6,7 +6,7 @@ import { ImageProps } from "~/app/@types/imagetype";
 
 export function loadImages(
   setArrayImages: Dispatch<SetStateAction<ImageProps[]>>,
-  limited: number
+  limited?: number
 ) {
   const unsub = onSnapshot(collection(db, "images"), (snapshot) => {
     getImages(setArrayImages, limited);
