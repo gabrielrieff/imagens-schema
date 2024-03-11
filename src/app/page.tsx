@@ -57,12 +57,15 @@ export default function Home() {
                     }
                   >
                     <ImageComp.ImageHeader>
-                      <Link href={`/pin/${image.imgID}`}>
+                      <Link
+                        href={`/pin/${image.imgID}`}
+                        className="cursor-zoom-in"
+                      >
                         Criador: {image.author}
                       </Link>
                     </ImageComp.ImageHeader>
 
-                    <ImageComp.ImageFooter>
+                    <ImageComp.ImageFooter className="hidden">
                       <Button
                         variant={"ghost"}
                         className="bg-white h-[30px] p-2 rounded-full hover:bg-gray-200"

@@ -76,15 +76,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     onAuthStateChanged(auth, (user) => {
       if (user?.uid) {
         getUserFirebase(user.uid);
-      } else {
-        setUserAuth(undefined);
       }
     });
   }
+
   useEffect(() => {
     if (userAuth !== undefined) return;
-    checkLogin();
-  }, [userAuth, setLimitedImages]);
+
+    return () => {
+      checkLogin();
+    };
+  });
+
+  async function verifyUser() {
+    if (pathname === "/user" && userAuth !== undefined) {
+      return push("/");
+    }
+
+    if (pathname === "/perfil" && userAuth === undefined) {
+      return push("/user");
+    }
+  }
 
   useEffect(() => {
     loadImages(setImages, limitedImages);
@@ -94,17 +106,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (userAuth === undefined) return;
 
-    async function verifyUser() {
-      if (pathname === "/user" && userAuth !== undefined) {
-        push("/");
-      }
-
-      if (pathname === "/perfil" && userAuth === undefined) {
-        push("/user");
-      }
-    }
-
-    verifyUser();
+    return () => {
+      verifyUser();
+    };
   }, [pathname, userAuth]);
 
   const signIn = async (email: string, password: string) => {

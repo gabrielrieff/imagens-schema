@@ -4,6 +4,7 @@ import {
   FormEvent,
   KeyboardEvent,
   useContext,
+  useEffect,
   useState,
 } from "react";
 import { usePathname, useRouter } from "next/navigation";
@@ -41,9 +42,7 @@ export const Header = () => {
   }
 
   function typingInSearch() {
-    if (!inputSearch) return;
-
-    if (inputSearch !== "") {
+    if (inputSearch.trim()) {
       setStringSeach(inputSearch);
       setTyping(true);
     } else {
@@ -56,6 +55,10 @@ export const Header = () => {
     setInputSearch("");
     setTyping(false);
   }
+
+  useEffect(() => {
+    typingInSearch();
+  }, [inputSearch]);
   return (
     <header
       className={`flex items-center justify-around fixed bg-white h-[80px] w-[90%] ms:w-[100%] max-w-[1200px] ${
@@ -93,7 +96,6 @@ export const Header = () => {
           className="pl-11 pr-11"
           onChange={(event) => {
             setInputSearch(event.target.value);
-            typingInSearch();
           }}
           onKeyUp={changePressKeyEntre}
         />
