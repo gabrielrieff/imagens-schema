@@ -1,7 +1,7 @@
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "~/firebase/firebaseConnec";
 import { getImages } from "./getImages";
-import { Dispatch, SetStateAction, useContext } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { ImageProps } from "~/app/@types/imagetype";
 
 export function loadImages(

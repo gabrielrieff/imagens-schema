@@ -1,13 +1,13 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { Dispatch, SetStateAction } from "react";
-import { imagesProps } from "~/app/@types/imagetype";
+import { ImageProps } from "~/app/@types/imagetype";
 import { db } from "~/firebase/firebaseConnec";
 
 export async function getImagesUser(
-  setArray: Dispatch<SetStateAction<imagesProps[]>>,
+  setArray: Dispatch<SetStateAction<ImageProps[]>>,
   userID: string
 ) {
-  let listImages: imagesProps[] = [];
+  let listImages: ImageProps[] = [];
 
   const queryCollection = query(
     collection(db, "images"),
@@ -17,7 +17,7 @@ export async function getImagesUser(
   const querySnapshot = await getDocs(queryCollection);
 
   await querySnapshot.forEach((doc) => {
-    const imagedata = doc.data() as imagesProps;
+    const imagedata = doc.data() as ImageProps;
     listImages.push({
       description: imagedata.description,
       imgID: imagedata.imgID,
