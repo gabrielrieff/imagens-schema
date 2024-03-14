@@ -61,7 +61,7 @@ export const Header = () => {
   }, [inputSearch]);
   return (
     <header
-      className={`flex items-center justify-around fixed bg-white h-[80px] w-[90%] ms:w-[100%] max-w-[1200px] ${
+      className={`flex items-center justify-around fixed bg-white h-[80px] w-[90%] ms:w-[100%] max-w-[1200px] z-50 ${
         path === "/user" && "hidden"
       }`}
     >
