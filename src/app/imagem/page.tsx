@@ -54,7 +54,7 @@ export default function Imagem() {
   const uploadImage = async (data: formDataProps) => {
     const { description, image, title } = data;
     const file = image[0];
-    console.log(file);
+
     if (!file) return;
 
     try {

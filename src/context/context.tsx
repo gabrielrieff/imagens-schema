@@ -72,20 +72,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  async function checkLogin() {
+  useEffect(() => {
+    if (userAuth !== undefined) return;
+
     onAuthStateChanged(auth, (user) => {
       if (user?.uid) {
         getUserFirebase(user.uid);
       }
     });
-  }
 
-  useEffect(() => {
-    if (userAuth !== undefined) return;
-
-    return () => {
-      checkLogin();
-    };
+    return;
   });
 
   async function verifyUser() {

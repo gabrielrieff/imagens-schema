@@ -10,7 +10,7 @@ export const useImageSchema = () => {
     title: z
       .string()
       .min(3, { message: "Insira um titúlo de pelo menos 3 caracteres" }),
-    image: z.instanceof(FileList),
+    image: z.any(),
   });
 
   type formDataProps = z.infer<typeof schema>;
@@ -27,7 +27,7 @@ export const useImageSchema = () => {
     defaultValues: {
       description: "",
       title: "",
-      image: undefined,
+      image: null,
     },
   });
 
