@@ -18,6 +18,7 @@ export const useImageSchema = () => {
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = useForm<formDataProps>({
     mode: "all",
@@ -30,5 +31,5 @@ export const useImageSchema = () => {
     },
   });
 
-  return { handleSubmit, register, errors, schema };
+  return { handleSubmit, register, errors, schema, reset };
 };

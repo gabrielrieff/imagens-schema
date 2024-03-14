@@ -22,7 +22,7 @@ export default function Imagem() {
   const { userAuth } = useContext(AuthContext);
   const [progress, setProgress] = useState(0);
 
-  const { handleSubmit, schema, errors, register } = useImageSchema();
+  const { handleSubmit, schema, errors, register, reset } = useImageSchema();
   type formDataProps = z.infer<typeof schema>;
 
   const [avatar, setAvatar] = useState("");
@@ -51,17 +51,17 @@ export default function Imagem() {
     return "";
   }
 
-  const uploadImage = (data: formDataProps) => {
+  const uploadImage = async (data: formDataProps) => {
     const { description, image, title } = data;
     const file = image[0];
-
+    console.log(file);
     if (!file) return;
 
     try {
       const storageRef = ref(storage, `images/${title}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
-      uploadTask.on(
+      await uploadTask.on(
         "state_changed",
         (snapshot) => {
           const progress = Math.round(
@@ -83,7 +83,7 @@ export default function Imagem() {
           await setDoc(doc(db, "images", imgID), {
             urlImage,
             imgID,
-            imageName: file.name,
+            imageName: title,
             author: `${userAuth?.firstName} ${userAuth?.lastName}`,
             userID: userAuth?.UserID,
             description,
@@ -92,6 +92,8 @@ export default function Imagem() {
         }
       );
 
+      reset();
+      setAvatar("");
       toast.success("Imagem salva com sucesso 😁");
     } catch (error) {
       toast.error("Não foi possível salvar sua imagem 😔");
@@ -119,20 +121,35 @@ export default function Imagem() {
                 <Input
                   id="file"
                   type="file"
-                  {...register("image")}
-                  onChange={handleAvatar}
+                  {...register("image", {
+                    onChange: (e) => {
+                      handleAvatar(e);
+                    },
+                  })}
                   className="h-full w-full absolute opacity-0"
                 />
               </Card>
             </>
           ) : (
-            <Image
-              alt="Preview"
-              src={avatar}
-              width={350}
-              height={350}
-              className="w-full max-w-[350px] rounded-lg"
-            />
+            <div className="h-full w-[350px] flex items-center justify-center relative">
+              <Image
+                alt="Preview"
+                src={avatar}
+                width={350}
+                height={350}
+                className="w-full max-w-[350px] rounded-lg"
+              />
+              <Input
+                id="file"
+                type="file"
+                {...register("image", {
+                  onChange: (e) => {
+                    handleAvatar(e);
+                  },
+                })}
+                className="h-full w-full absolute opacity-0"
+              />
+            </div>
           )}
         </div>
 
