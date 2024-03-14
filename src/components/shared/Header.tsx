@@ -78,7 +78,7 @@ export const Header = () => {
         </Button>
 
         <Button asChild className="ms:hidden">
-          <Link href={"/imagem"}>Criar</Link>
+          <Link href={userAuth ? "/imagem" : "/user"}>Criar</Link>
         </Button>
       </div>
 

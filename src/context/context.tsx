@@ -93,7 +93,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return push("/");
     }
 
-    if (pathname === "/perfil" && userAuth === undefined) {
+    if (
+      (pathname === "/perfil" || pathname === "/imagem") &&
+      userAuth === undefined
+    ) {
       return push("/user");
     }
   }
@@ -104,8 +107,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [limitedImages]);
 
   useEffect(() => {
-    if (userAuth === undefined) return;
-
     return () => {
       verifyUser();
     };
