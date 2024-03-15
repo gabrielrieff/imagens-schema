@@ -1,36 +1,28 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# image-schema
 
-## Getting Started
+O image-schema é um projeto que de certa forma é uma abstração do `pintrest`, criei ele com o objetivo desenvolver minhas habilidades como desenvolvedor, mas de uma maneira bem mais enxuta e simples.
 
-First, run the development server:
+Vou citar algumas funcionalidades mais básicas, como, por exemplo, criar usuários, fazer login, salvar imagens com título de descrição e listar as imagens salvas de forma aberta, dentre outras de uso mais interno do projeto.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+As tecnologias usadas foram ReactJS e Firebase, mas foi usado outras bibliotecas para auxiliar no desenvolvimento, como, por exemplo, React hook forms, tailwind, entre outras.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+O projeto já está disponível para uso do público, mas está restrito a criação de usuários, pois ainda não existe uma validação das imagens que o usuário tenta salvar, e ainda existem alguns pontos de melhoria e novas funcionalidades a desenvolver.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Screenshot
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+![App Screenshot](https://firebasestorage.googleapis.com/v0/b/imagens-schema.appspot.com/o/private%2FScreenshot%202024-03-15%20114809.png?alt=media&token=a463cb3f-34cd-4a49-8468-b774dd28a7de)
 
-## Learn More
+## Stack utilizada
 
-To learn more about Next.js, take a look at the following resources:
+**Front-end:** React, NextJS, Firebase, TailwindCSS, React hook forms, Shadcs
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🔗 Links
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+[![deployo](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://imagens-schema.vercel.app/)
 
-## Deploy on Vercel
+## Usuário público
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Usuário público criado para quem tiver interesse em acessar as rotas privadas do projeto, mas este usuário tem restrição para criar/salvar imagens dentro do site, pois como ainda não existe uma validação das imagens que o usuário tenta salvar, isso é para evitar qualquer problema com uma tentativa de salvar imagens impróprias/indesejadas dentro do site
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- E-mail: user-public@gmail.com
+- Passaword: Public@123
