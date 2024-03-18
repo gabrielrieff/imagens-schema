@@ -54,6 +54,7 @@ export const FormRegister = () => {
             <div className="flex flex-col">
               <span>Nome</span>
               <Input
+                disabled={true}
                 autoComplete="off"
                 {...register("firstName")}
                 type="text"
@@ -66,7 +67,12 @@ export const FormRegister = () => {
             </div>
             <div className="flex flex-col">
               <span>Sobrenome</span>
-              <Input autoComplete="off" {...register("lastName")} type="text" />
+              <Input
+                disabled={true}
+                autoComplete="off"
+                {...register("lastName")}
+                type="text"
+              />
               {errors.lastName && (
                 <span className="text-red-700 text-xs">
                   {errors.lastName.message}
@@ -78,7 +84,12 @@ export const FormRegister = () => {
           <label className="flex flex-col">
             <div className="flex flex-col">
               <span>Usuário</span>
-              <Input autoComplete="off" {...register("user")} type="text" />
+              <Input
+                disabled={true}
+                autoComplete="off"
+                {...register("user")}
+                type="text"
+              />
               {errors.user && (
                 <span className="text-red-700 text-xs">
                   {errors.user.message}
@@ -90,7 +101,12 @@ export const FormRegister = () => {
           <label className="flex flex-col">
             <div className="flex flex-col">
               <span>E-mail</span>
-              <Input autoComplete="off" {...register("email")} type="email" />
+              <Input
+                disabled={true}
+                autoComplete="off"
+                {...register("email")}
+                type="email"
+              />
               {errors.email && (
                 <span className="text-red-700 text-xs">
                   {errors.email.message}
@@ -104,6 +120,7 @@ export const FormRegister = () => {
               <span>Senha</span>
               <div className="flex">
                 <Input
+                  disabled={true}
                   className="rounded-r-none"
                   autoComplete="off"
                   {...register("password")}
@@ -131,7 +148,7 @@ export const FormRegister = () => {
         </CardContent>
 
         <CardFooter>
-          <Button type="submit" className="w-full">
+          <Button disabled={true} type="submit" className="w-full">
             Cadastrar
           </Button>
         </CardFooter>
