@@ -190,6 +190,7 @@ export default function Imagem() {
 
             <div className="flex justify-center items-center flex-row gap-3 w-full">
               <Button
+                disabled={userAuth?.user === "UserPublico" && true}
                 type="submit"
                 className="bg-emerald-500 hover:bg-emerald-700 w-full"
               >
